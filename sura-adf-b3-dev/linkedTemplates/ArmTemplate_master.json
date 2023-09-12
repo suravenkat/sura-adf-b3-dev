@@ -1,0 +1,225 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "sura-adf-b3-dev"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"ls_azuresql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_azuresql'"
+		},
+		"ls_incrementalTargetSQL_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_incrementalTargetSQL'"
+		},
+		"ls_scriptOutputAdls_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_scriptOutputAdls'"
+		},
+		"ls_targetsql_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_targetsql'"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
+		},
+		"AzureKeyVault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://surakeyvault.vault.azure.net/"
+		},
+		"ls_sourceadls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
+		},
+		"ls_sourcesqlUsingAKV_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "azuredevsql"
+		},
+		"TumblingWindowTrigger_24hrs_properties_pipeline_parameters_startdate": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowStartTime"
+		},
+		"TumblingWindowTrigger_24hrs_properties_pipeline_parameters_enddate": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowEndTime"
+		},
+		"TumblingWindow_Trigger_properties_pipeline_parameters_startdate": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowStartTime"
+		},
+		"TumblingWindow_Trigger_properties_pipeline_parameters_enddate": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowEndTime"
+		},
+		"scheduleTrigger_properties_custom_fullLoad_parameters_tablelist": {
+			"type": "array",
+			"defaultValue": [
+				{
+					"tableName": "iplteams_last7",
+					"tableSchemaName": "dbo",
+					"WaterMark_Column": "last_updated"
+				},
+				{
+					"tableName": "employees_last7",
+					"tableSchemaName": "dbo",
+					"WaterMark_Column": "last_updated"
+				}
+			]
+		},
+		"tumblingWindowTrigger_24Hours_properties_pipeline_parameters_startdate": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowStartTime"
+		},
+		"tumblingWindowTrigger_24Hours_properties_pipeline_parameters_enddate": {
+			"type": "string",
+			"defaultValue": "@trigger().outputs.windowEndTime"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "sura-adf-b3-dev_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureDataLakeStorage1_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					},
+					"ls_azuresql_connectionString": {
+						"value": "[parameters('ls_azuresql_connectionString')]"
+					},
+					"ls_incrementalTargetSQL_connectionString": {
+						"value": "[parameters('ls_incrementalTargetSQL_connectionString')]"
+					},
+					"ls_scriptOutputAdls_connectionString": {
+						"value": "[parameters('ls_scriptOutputAdls_connectionString')]"
+					},
+					"ls_targetsql_connectionString": {
+						"value": "[parameters('ls_targetsql_connectionString')]"
+					},
+					"AzureDataLakeStorage1_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
+					},
+					"AzureKeyVault_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault_properties_typeProperties_baseUrl')]"
+					},
+					"ls_sourceadls_properties_typeProperties_url": {
+						"value": "[parameters('ls_sourceadls_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "sura-adf-b3-dev_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'sura-adf-b3-dev_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "sura-adf-b3-dev_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"ls_sourcesqlUsingAKV_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('ls_sourcesqlUsingAKV_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'sura-adf-b3-dev_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "sura-adf-b3-dev_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"TumblingWindowTrigger_24hrs_properties_pipeline_parameters_startdate": {
+						"value": "[parameters('TumblingWindowTrigger_24hrs_properties_pipeline_parameters_startdate')]"
+					},
+					"TumblingWindowTrigger_24hrs_properties_pipeline_parameters_enddate": {
+						"value": "[parameters('TumblingWindowTrigger_24hrs_properties_pipeline_parameters_enddate')]"
+					},
+					"TumblingWindow_Trigger_properties_pipeline_parameters_startdate": {
+						"value": "[parameters('TumblingWindow_Trigger_properties_pipeline_parameters_startdate')]"
+					},
+					"TumblingWindow_Trigger_properties_pipeline_parameters_enddate": {
+						"value": "[parameters('TumblingWindow_Trigger_properties_pipeline_parameters_enddate')]"
+					},
+					"scheduleTrigger_properties_custom_fullLoad_parameters_tablelist": {
+						"value": "[parameters('scheduleTrigger_properties_custom_fullLoad_parameters_tablelist')]"
+					},
+					"tumblingWindowTrigger_24Hours_properties_pipeline_parameters_startdate": {
+						"value": "[parameters('tumblingWindowTrigger_24Hours_properties_pipeline_parameters_startdate')]"
+					},
+					"tumblingWindowTrigger_24Hours_properties_pipeline_parameters_enddate": {
+						"value": "[parameters('tumblingWindowTrigger_24Hours_properties_pipeline_parameters_enddate')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'sura-adf-b3-dev_ArmTemplate_2')]"
+			]
+		}
+	]
+}

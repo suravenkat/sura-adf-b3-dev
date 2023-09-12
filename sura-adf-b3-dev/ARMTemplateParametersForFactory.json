@@ -1,0 +1,68 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "sura-adf-b3-dev"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
+		"ls_azuresql_connectionString": {
+			"value": ""
+		},
+		"ls_incrementalTargetSQL_connectionString": {
+			"value": ""
+		},
+		"ls_scriptOutputAdls_connectionString": {
+			"value": ""
+		},
+		"ls_targetsql_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://suraadlsdev.dfs.core.windows.net/"
+		},
+		"AzureKeyVault_properties_typeProperties_baseUrl": {
+			"value": "https://surakeyvault.vault.azure.net/"
+		},
+		"ls_sourceadls_properties_typeProperties_url": {
+			"value": "https://suraadlsdev.dfs.core.windows.net/"
+		},
+		"ls_sourcesqlUsingAKV_properties_typeProperties_connectionString_secretName": {
+			"value": "azuredevsql"
+		},
+		"TumblingWindowTrigger_24hrs_properties_pipeline_parameters_startdate": {
+			"value": "@trigger().outputs.windowStartTime"
+		},
+		"TumblingWindowTrigger_24hrs_properties_pipeline_parameters_enddate": {
+			"value": "@trigger().outputs.windowEndTime"
+		},
+		"TumblingWindow_Trigger_properties_pipeline_parameters_startdate": {
+			"value": "@trigger().outputs.windowStartTime"
+		},
+		"TumblingWindow_Trigger_properties_pipeline_parameters_enddate": {
+			"value": "@trigger().outputs.windowEndTime"
+		},
+		"scheduleTrigger_properties_custom_fullLoad_parameters_tablelist": {
+			"value": [
+				{
+					"tableName": "iplteams_last7",
+					"tableSchemaName": "dbo",
+					"WaterMark_Column": "last_updated"
+				},
+				{
+					"tableName": "employees_last7",
+					"tableSchemaName": "dbo",
+					"WaterMark_Column": "last_updated"
+				}
+			]
+		},
+		"tumblingWindowTrigger_24Hours_properties_pipeline_parameters_startdate": {
+			"value": "@trigger().outputs.windowStartTime"
+		},
+		"tumblingWindowTrigger_24Hours_properties_pipeline_parameters_enddate": {
+			"value": "@trigger().outputs.windowEndTime"
+		}
+	}
+}
