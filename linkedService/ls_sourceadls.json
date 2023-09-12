@@ -1,0 +1,11 @@
+{
+	"name": "ls_sourceadls",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://suraadlsdev.dfs.core.windows.net/"
+		}
+	}
+}

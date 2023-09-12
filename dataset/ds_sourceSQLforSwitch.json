@@ -1,0 +1,17 @@
+{
+	"name": "ds_sourceSQLforSwitch",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azuresql",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "metadataadf2"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

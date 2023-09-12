@@ -1,0 +1,61 @@
+{
+	"name": "IfCondition",
+	"properties": {
+		"activities": [
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@contains(pipeline().parameters.operation, 'Extraction')",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Ingestion_Pipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "lookup_csv",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Extraction_Pipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "copyfile",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"operation": {
+				"type": "array",
+				"defaultValue": [
+					"Extraction",
+					"Ingestion"
+				]
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2023-08-30T15:22:20Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

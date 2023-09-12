@@ -1,0 +1,40 @@
+{
+	"name": "scheduleTrigger",
+	"properties": {
+		"description": "scheduleTrigger",
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "custom_fullLoad",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"tablelist": [
+						{
+							"tableName": "iplteams_last7",
+							"tableSchemaName": "dbo",
+							"WaterMark_Column": "last_updated"
+						},
+						{
+							"tableName": "employees_last7",
+							"tableSchemaName": "dbo",
+							"WaterMark_Column": "last_updated"
+						}
+					]
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 10,
+				"startTime": "2023-09-11T20:50:00",
+				"endTime": "2023-09-13T15:15:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}

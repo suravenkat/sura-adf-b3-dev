@@ -1,0 +1,9 @@
+{
+	"name": "sura-adf-b3-dev",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "a5ba99ee-9053-4b0e-9dbe-4c8edc939079",
+		"tenantId": "100a7e00-c249-4c60-b1c3-70200fb7e3dc"
+	}
+}
