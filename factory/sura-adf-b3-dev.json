@@ -1,5 +1,13 @@
 {
 	"name": "sura-adf-b3-dev",
+	"properties": {
+		"globalParameters": {
+			"ADLSUrlDevGlobalParameter": {
+				"type": "string",
+				"value": "https://suraadlsdev.dfs.core.windows.net/"
+			}
+		}
+	},
 	"location": "eastus",
 	"identity": {
 		"type": "SystemAssigned",
