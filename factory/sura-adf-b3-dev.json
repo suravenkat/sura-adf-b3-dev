@@ -9,6 +9,21 @@
 			"DB_name": {
 				"type": "string",
 				"value": "devazuresql"
+			},
+			"tableList": {
+				"type": "array",
+				"value": [
+					{
+						"tableName": "iplteams_last7",
+						"tableSchemaName": "dbo",
+						"WaterMark_Column": "last_updated"
+					},
+					{
+						"tableName": "employees_last7",
+						"tableSchemaName": "dbo",
+						"WaterMark_Column": "last_updated"
+					}
+				]
 			}
 		}
 	},
