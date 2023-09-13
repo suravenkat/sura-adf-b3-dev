@@ -11,7 +11,7 @@
 				"value": "devazuresql"
 			},
 			"tableList": {
-				"type": "array",
+				"type": "string",
 				"value": [
 					{
 						"tableName": "iplteams_last7",
