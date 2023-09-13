@@ -5,6 +5,10 @@
 			"ADLSUrlDevGlobalParameter": {
 				"type": "string",
 				"value": "https://suraadlsdev.dfs.core.windows.net/"
+			},
+			"DB_name": {
+				"type": "string",
+				"value": "devazuresql"
 			}
 		}
 	},
