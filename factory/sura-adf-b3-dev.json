@@ -24,6 +24,10 @@
 						"WaterMark_Column": "last_updated"
 					}
 				]
+			},
+			"ResourceGroup": {
+				"type": "string",
+				"value": "sura-rg"
 			}
 		}
 	},
