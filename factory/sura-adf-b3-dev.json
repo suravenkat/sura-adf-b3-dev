@@ -1,13 +1,5 @@
 {
 	"name": "sura-adf-b3-dev",
-	"properties": {
-		"globalParameters": {
-			"adlspath": {
-				"type": "string",
-				"value": "/Users/suravenkatb324@gmail.com/ADLS/adlspathtest"
-			}
-		}
-	},
 	"location": "eastus",
 	"identity": {
 		"type": "SystemAssigned",
