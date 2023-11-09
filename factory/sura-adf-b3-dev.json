@@ -4,7 +4,7 @@
 		"globalParameters": {
 			"adlspath": {
 				"type": "string",
-				"value": "/Users/suravenkatb324@gmail.com/ADLS/adfNotebook"
+				"value": "/Users/suravenkatb324@gmail.com/ADLS/adlspathtest"
 			}
 		}
 	},
