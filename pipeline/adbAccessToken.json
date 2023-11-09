@@ -1,0 +1,47 @@
+{
+	"name": "adbAccessToken",
+	"properties": {
+		"activities": [
+			{
+				"name": "AccessTokenNotebook",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Wait1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/suravenkatb324@gmail.com/DeltaLake/notebook2"
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_AccessToken",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 3
+				}
+			}
+		],
+		"folder": {
+			"name": "ADB-Pipelines"
+		},
+		"annotations": []
+	}
+}
