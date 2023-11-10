@@ -13,7 +13,19 @@
 				},
 				"secretName": "adbaccesstoken"
 			},
-			"existingClusterId": "1030-160509-3hk1jbj6"
+			"newClusterNodeType": "Standard_DS3_V2",
+			"newClusterNumOfWorker": "2:5",
+			"newClusterSparkConf": {
+				"spark.hadoop.javax.jdo.option.ConnectionDriverName": "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+				"spark.hadoop.javax.jdo.option.ConnectionURL": "jdbc:mariadb://consolidated-eastusc3-prod-metastore-0.mysql.database.azure.com:3306/organization3203931274762907?useSSL=true&amp;enabledSslProtocolSuites=TLSv1,TLSv1.1,TLSv1.2&amp;serverSslCert=/databricks/common/mysql-ssl-ca-cert.crt</value>;",
+				"spark.hadoop.fs.permissions.umask-mode": "007"
+			},
+			"newClusterSparkEnvVars": {
+				"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+			},
+			"newClusterVersion": "Standard_DS3_V2",
+			"clusterOption": "Autoscaling",
+			"newClusterInitScripts": []
 		}
 	}
 }
