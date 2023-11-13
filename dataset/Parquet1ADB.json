@@ -1,0 +1,21 @@
+{
+	"name": "Parquet1ADB",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sourceadls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "logistics_southafrica_lz_supplychainapps_dbo_weeklycalendar_d",
+				"folderPath": "parquetfile",
+				"fileSystem": "sourcecontainer"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}

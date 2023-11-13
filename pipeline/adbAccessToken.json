@@ -5,14 +5,7 @@
 			{
 				"name": "AccessTokenNotebook",
 				"type": "DatabricksNotebook",
-				"dependsOn": [
-					{
-						"activity": "Wait1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -22,23 +15,131 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/suravenkatb324@gmail.com/DeltaLake/notebook2"
+					"notebookPath": {
+						"value": "@pipeline().parameters.ADB_Notebook_Path",
+						"type": "Expression"
+					},
+					"baseParameters": {
+						"ingestionTables": {
+							"value": "@string(pipeline().parameters.ingestionTables)",
+							"type": "Expression"
+						}
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "LS_AccessToken",
 					"type": "LinkedServiceReference"
 				}
-			},
-			{
-				"name": "Wait1",
-				"type": "Wait",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 3
-				}
 			}
 		],
+		"parameters": {
+			"ingestionTables": {
+				"type": "object",
+				"defaultValue": {
+					"ingestionTables": [
+						{
+							"sourceTableName": "employee",
+							"targetTableName": "hz_supplychainapps_dbo_employee_southafrica_logistics_material_d",
+							"Source_File_Name": "logistics_southafrica_lz_supplychainapps_dbo_weeklycalendar_d",
+							"Source_File_Location": "/root/lz_data/src_sys/afr/southafrica_logistics_material_supplychainapps/supl/",
+							"Target_File_Location": "/root/hz_data/src_sys/supl/afr/hz_supplychainapps_dbo_weeklycalendar_southafrica_logistics_material_d/",
+							"Delete_File_Location": "/root/hz_data/src_sys/supl/afr/hz_supplychainapps_dbo_weeklycalendar_southafrica_logistics_material_d/",
+							"Source_File_Delimiter": "parquet",
+							"Rejected_Record_Location": "/root/working/logistics/err/southafrica/supplychainapps/err_supplychainapps_dbo_weeklycalendar_southafrica_logistics_material_d/",
+							"Rejected_File_Location": "/root/lz_data/src_sys/southafrica/logistics/supplychainapps/reject/hz_supplychainapps_dbo_weeklycalendar_southafrica_logistics_material_d/",
+							"Encoding": "UTF-8",
+							"Archive_File": "yes",
+							"Source_File_Archive_Location": "/root/lz_data/src_sys/afr/southafrica_logistics_material_supplychainapps/supl/archive/hz_supplychainapps_dbo_weeklycalendar_southafrica_logistics_material_d",
+							"Load_Type_Code": "flush_n_fill",
+							"zone": "afr",
+							"country": "southafrica",
+							"businessDomain": "logistics",
+							"businessSubDomain": "supply_chain",
+							"sourceSystemId": "",
+							"sourceSystemName": "supplychainapps",
+							"Job_Run_ID": "20220125121245641",
+							"HZ_DB_Name": "dev_db",
+							"watermark_column": "wDayDate",
+							"Error_DB_Name": "dev_db",
+							"Error_Data_Lake_object": "err_supplychainapps_dbo_weeklycalendar_southafrica_logistics_material_d",
+							"tableColumns": [
+								{
+									"sourceColumnName": "id",
+									"sourceDataType": "int",
+									"targetColumnName": "id",
+									"targetDataType": "int",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "name",
+									"sourceDataType": "varchar",
+									"targetColumnName": "name",
+									"targetDataType": "string",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "salary",
+									"sourceDataType": "int",
+									"targetColumnName": "salary",
+									"targetDataType": "double",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "age",
+									"sourceDataType": "int",
+									"targetColumnName": "age",
+									"targetDataType": "int",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "company",
+									"sourceDataType": "varchar",
+									"targetColumnName": "company",
+									"targetDataType": "string",
+									"isKey": false
+								}
+							],
+							"targetTablePartition": []
+						}
+					]
+				}
+			},
+			"ADB_Notebook_Path": {
+				"type": "string"
+			},
+			"Batch_Run_ID": {
+				"type": "string",
+				"defaultValue": "20231113121245641"
+			},
+			"Batch_Name": {
+				"type": "string",
+				"defaultValue": "logistics"
+			},
+			"CURRENT_USER": {
+				"type": "string",
+				"defaultValue": "suravenkatb324@gmail.com"
+			},
+			"businessArea": {
+				"type": "string",
+				"defaultValue": "sales_distribution"
+			},
+			"Business_Sub_Domain": {
+				"type": "string",
+				"defaultValue": "supply_chain"
+			},
+			"projectName": {
+				"type": "string",
+				"defaultValue": "SKU_FOCUS"
+			},
+			"country": {
+				"type": "string",
+				"defaultValue": "southafrica"
+			},
+			"src_sys_name": {
+				"type": "string",
+				"defaultValue": "SupplyChainApps"
+			}
+		},
 		"folder": {
 			"name": "ADB-Pipelines"
 		},
