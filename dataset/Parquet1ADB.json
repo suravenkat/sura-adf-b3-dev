@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "logistics_southafrica_lz_supplychainapps_dbo_weeklycalendar_d",
-				"folderPath": "parquetfile",
+				"fileName": "lz_salesemployee",
+				"folderPath": "adb/lz_data/src_sys/asia/sales",
 				"fileSystem": "sourcecontainer"
 			},
 			"compressionCodec": "snappy"

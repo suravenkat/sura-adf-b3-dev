@@ -5,7 +5,14 @@
 			{
 				"name": "AccessTokenNotebook",
 				"type": "DatabricksNotebook",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -23,6 +30,10 @@
 						"ingestionTables": {
 							"value": "@string(pipeline().parameters.ingestionTables)",
 							"type": "Expression"
+						},
+						"ADLS_Path_Prefix": {
+							"value": "@pipeline().globalParameters.ADLS_Path_Prefix",
+							"type": "Expression"
 						}
 					}
 				},
@@ -30,6 +41,62 @@
 					"referenceName": "LS_AccessToken",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ADBCsv",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Parquet1ADB",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"parameters": {
@@ -38,62 +105,62 @@
 				"defaultValue": {
 					"ingestionTables": [
 						{
-							"sourceTableName": "employee",
-							"targetTableName": "hz_supplychainapps_dbo_employee_southafrica_logistics_material_d",
-							"Source_File_Name": "logistics_southafrica_lz_supplychainapps_dbo_weeklycalendar_d",
-							"Source_File_Location": "/root/lz_data/src_sys/afr/southafrica_logistics_material_supplychainapps/supl/",
-							"Target_File_Location": "/root/hz_data/src_sys/supl/afr/hz_supplychainapps_dbo_weeklycalendar_southafrica_logistics_material_d/",
-							"Delete_File_Location": "/root/hz_data/src_sys/supl/afr/hz_supplychainapps_dbo_weeklycalendar_southafrica_logistics_material_d/",
+							"sourceTableName": "salesemployee",
+							"targetTableName": "hz_salesemployee",
+							"Source_File_Name": "lz_salesemployee",
+							"Source_File_Location": "/adb/lz_data/src_sys/asia/sales/",
+							"Target_File_Location": "/adb/hz_data/src_sys/asia/sales/hz_salesemployee/",
+							"Delete_File_Location": "/adb/hz_data/src_sys/asia/sales/hz_salesemployee/",
 							"Source_File_Delimiter": "parquet",
-							"Rejected_Record_Location": "/root/working/logistics/err/southafrica/supplychainapps/err_supplychainapps_dbo_weeklycalendar_southafrica_logistics_material_d/",
-							"Rejected_File_Location": "/root/lz_data/src_sys/southafrica/logistics/supplychainapps/reject/hz_supplychainapps_dbo_weeklycalendar_southafrica_logistics_material_d/",
+							"Rejected_Record_Location": "/adb/working/sales/err/asia/err_salesemployee/",
+							"Rejected_File_Location": "/adb/lz_data/src_sys/asia/sales/reject/hz_salesemployee/",
 							"Encoding": "UTF-8",
 							"Archive_File": "yes",
-							"Source_File_Archive_Location": "/root/lz_data/src_sys/afr/southafrica_logistics_material_supplychainapps/supl/archive/hz_supplychainapps_dbo_weeklycalendar_southafrica_logistics_material_d",
+							"Source_File_Archive_Location": "/adb/lz_data/src_sys/asia/sales/archive/hz_salesemployee",
 							"Load_Type_Code": "flush_n_fill",
-							"zone": "afr",
-							"country": "southafrica",
-							"businessDomain": "logistics",
-							"businessSubDomain": "supply_chain",
+							"zone": "asia",
+							"country": "asia",
+							"businessDomain": "sales",
+							"businessSubDomain": "sales_electronics_domain",
 							"sourceSystemId": "",
-							"sourceSystemName": "supplychainapps",
-							"Job_Run_ID": "20220125121245641",
+							"sourceSystemName": "sales",
+							"Job_Run_ID": "20231113121245641",
 							"HZ_DB_Name": "dev_db",
-							"watermark_column": "wDayDate",
+							"watermark_column": "id",
 							"Error_DB_Name": "dev_db",
-							"Error_Data_Lake_object": "err_supplychainapps_dbo_weeklycalendar_southafrica_logistics_material_d",
+							"Error_Data_Lake_object": "err_salesemployee",
 							"tableColumns": [
 								{
 									"sourceColumnName": "id",
-									"sourceDataType": "int",
+									"sourceDataType": "string",
 									"targetColumnName": "id",
 									"targetDataType": "int",
 									"isKey": false
 								},
 								{
 									"sourceColumnName": "name",
-									"sourceDataType": "varchar",
+									"sourceDataType": "string",
 									"targetColumnName": "name",
 									"targetDataType": "string",
 									"isKey": false
 								},
 								{
 									"sourceColumnName": "salary",
-									"sourceDataType": "int",
+									"sourceDataType": "string",
 									"targetColumnName": "salary",
 									"targetDataType": "double",
 									"isKey": false
 								},
 								{
 									"sourceColumnName": "age",
-									"sourceDataType": "int",
+									"sourceDataType": "string",
 									"targetColumnName": "age",
 									"targetDataType": "int",
 									"isKey": false
 								},
 								{
 									"sourceColumnName": "company",
-									"sourceDataType": "varchar",
+									"sourceDataType": "string",
 									"targetColumnName": "company",
 									"targetDataType": "string",
 									"isKey": false
@@ -105,7 +172,8 @@
 				}
 			},
 			"ADB_Notebook_Path": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "/Users/suravenkatb324@gmail.com/ADB_Ingestion_Data/adb_master_code_adb"
 			},
 			"Batch_Run_ID": {
 				"type": "string",
@@ -113,7 +181,7 @@
 			},
 			"Batch_Name": {
 				"type": "string",
-				"defaultValue": "logistics"
+				"defaultValue": "employee"
 			},
 			"CURRENT_USER": {
 				"type": "string",
@@ -121,23 +189,31 @@
 			},
 			"businessArea": {
 				"type": "string",
-				"defaultValue": "sales_distribution"
+				"defaultValue": "sales"
 			},
 			"Business_Sub_Domain": {
 				"type": "string",
-				"defaultValue": "supply_chain"
+				"defaultValue": "sales_electronics_domain"
 			},
 			"projectName": {
 				"type": "string",
-				"defaultValue": "SKU_FOCUS"
+				"defaultValue": "sales"
 			},
 			"country": {
 				"type": "string",
-				"defaultValue": "southafrica"
+				"defaultValue": "india"
 			},
 			"src_sys_name": {
 				"type": "string",
-				"defaultValue": "SupplyChainApps"
+				"defaultValue": "salesDatabase"
+			},
+			"src_sys_id": {
+				"type": "string",
+				"defaultValue": "2023"
+			},
+			"lz_root_path": {
+				"type": "string",
+				"defaultValue": "/adb/lz_data/src_sys/asia/sales/"
 			}
 		},
 		"folder": {
