@@ -148,7 +148,7 @@
 							"sourceSystemName": "sales",
 							"Job_Run_ID": "20231113121245641",
 							"HZ_DB_Name": "dev_db",
-							"watermark_column": "id",
+							"watermark_column": "last_updated",
 							"Error_DB_Name": "dev_db",
 							"Error_Data_Lake_object": "err_employees_last07",
 							"tableColumns": [
