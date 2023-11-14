@@ -76,14 +76,13 @@
 									"partitionOption": "None"
 								},
 								"sink": {
-									"type": "AzureSqlSink",
-									"preCopyScript": {
-										"value": "@{concat('delete  from ', item().tableSchemaName, '.', item().tableName, ' WHERE ', item().WaterMark_Column, ' >= ''', formatDateTime(adddays(utcnow(), -7), 'yyyy-MM-dd'), '''')}",
-										"type": "Expression"
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
 									},
-									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false,
-									"disableMetricsCollection": false
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
 								},
 								"enableStaging": false,
 								"translator": {
@@ -113,18 +112,8 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "ds_CustomLoadTargetSQL",
-									"type": "DatasetReference",
-									"parameters": {
-										"TableName": {
-											"value": "@item().tableName",
-											"type": "Expression"
-										},
-										"SchemaName": {
-											"value": "@item().tableSchemaName",
-											"type": "Expression"
-										}
-									}
+									"referenceName": "ds_last07_adf_adb",
+									"type": "DatasetReference"
 								}
 							]
 						}
