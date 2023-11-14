@@ -135,7 +135,7 @@
 							"Encoding": "UTF-8",
 							"Archive_File": "yes",
 							"Source_File_Archive_Location": "/adb/lz_data/src_sys/asia/sales/archive/hz_employees_last07",
-							"Load_Type_Code": "last_07",
+							"Load_Type_Code": "flush_n_fill",
 							"zone": "asia",
 							"country": "india",
 							"businessDomain": "sales",
