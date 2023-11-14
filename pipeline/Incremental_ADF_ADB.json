@@ -350,7 +350,7 @@
 				"defaultValue": "/adb/lz_data/src_sys/asia/sales/"
 			},
 			"tablelist": {
-				"type": "object",
+				"type": "array",
 				"defaultValue": [
 					{
 						"tableName": "salesitems_increm",
