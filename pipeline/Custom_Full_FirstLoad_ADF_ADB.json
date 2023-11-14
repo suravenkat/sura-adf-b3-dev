@@ -1,5 +1,5 @@
 {
-	"name": "Custom_Last07_ADF_ADB",
+	"name": "Custom_Full_FirstLoad_ADF_ADB",
 	"properties": {
 		"activities": [
 			{
@@ -68,22 +68,13 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "@concat('select * from ',  item().tableSchemaName, '.', item().tableName, ' WHERE ', item().WaterMark_Column, ' >= ''', formatDateTime(adddays(utcnow(), -7), 'yyyy-MM-dd'), '''')",
-										"type": "Expression"
-									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"preCopyScript": {
-										"value": "@{concat('delete  from ', item().tableSchemaName, '.', item().tableName, ' WHERE ', item().WaterMark_Column, ' >= ''', formatDateTime(adddays(utcnow(), -7), 'yyyy-MM-dd'), '''')}",
-										"type": "Expression"
-									},
 									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false,
-									"disableMetricsCollection": false
+									"sqlWriterUseTableLock": false
 								},
 								"enableStaging": false,
 								"translator": {
