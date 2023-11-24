@@ -5,6 +5,9 @@
 			"referenceName": "ls_sourceadls",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Datasets_bkp"
+		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {

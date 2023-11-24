@@ -10,6 +10,9 @@
 				"type": "string"
 			}
 		},
+		"folder": {
+			"name": "Datasets_bkp"
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
