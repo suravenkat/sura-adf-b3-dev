@@ -74,6 +74,9 @@
 				"type": "string"
 			}
 		},
+		"folder": {
+			"name": "Pipelines_bkp"
+		},
 		"annotations": [],
 		"lastPublishTime": "2023-09-11T16:22:10Z"
 	},

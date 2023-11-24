@@ -120,6 +120,9 @@
 				"defaultValue": "False"
 			}
 		},
+		"folder": {
+			"name": "Pipelines_bkp"
+		},
 		"annotations": [],
 		"lastPublishTime": "2023-09-01T15:52:23Z"
 	},
