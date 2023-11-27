@@ -11,6 +11,22 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
 		},
+		"AzureDataLakeStorage2_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'AzureDataLakeStorage2'"
+		},
+		"AzureDatabricks1_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
+		},
+		"LS_AccessToken_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'LS_AccessToken'"
+		},
+		"ls_adlsServicePrincipal_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'ls_adlsServicePrincipal'"
+		},
 		"ls_azuresql_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_azuresql'"
@@ -31,9 +47,53 @@
 			"type": "string",
 			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
 		},
+		"AzureDataLakeStorage2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage2_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "100a7e00-c249-4c60-b1c3-70200fb7e3dc"
+		},
+		"AzureDataLakeStorage2_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "77652f11-89cc-40c8-a73a-07a2f1dcb9c2"
+		},
+		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1030-160509-3hk1jbj6"
+		},
+		"AzureDatabricks2Keyvault_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1030-160509-3hk1jbj6"
+		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://surakeyvault.vault.azure.net/"
+		},
+		"LS_ADBManagedIdentity_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1030-160509-3hk1jbj6"
+		},
+		"LS_AccessToken_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1030-160509-3hk1jbj6"
+		},
+		"ls_adlsServicePrincipal_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
+		},
+		"ls_adlsServicePrincipal_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "100a7e00-c249-4c60-b1c3-70200fb7e3dc"
+		},
+		"ls_adlsServicePrincipal_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "0d81d1b2-ad0d-49a2-94dd-249ab461c35e"
+		},
+		"ls_copy_csv_file_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
 		},
 		"ls_sourceadls_properties_typeProperties_url": {
 			"type": "string",
@@ -42,6 +102,10 @@
 		"ls_sourcesqlUsingAKV_properties_typeProperties_connectionString_secretName": {
 			"type": "string",
 			"defaultValue": "azuredevsql"
+		},
+		"ls_target_copy_csv_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
 		},
 		"TumblingWindowTrigger_24hrs_properties_pipeline_parameters_startdate": {
 			"type": "string",
@@ -112,6 +176,18 @@
 					"AzureDataLakeStorage1_accountKey": {
 						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
 					},
+					"AzureDataLakeStorage2_servicePrincipalCredential": {
+						"value": "[parameters('AzureDataLakeStorage2_servicePrincipalCredential')]"
+					},
+					"AzureDatabricks1_accessToken": {
+						"value": "[parameters('AzureDatabricks1_accessToken')]"
+					},
+					"LS_AccessToken_accessToken": {
+						"value": "[parameters('LS_AccessToken_accessToken')]"
+					},
+					"ls_adlsServicePrincipal_servicePrincipalCredential": {
+						"value": "[parameters('ls_adlsServicePrincipal_servicePrincipalCredential')]"
+					},
 					"ls_azuresql_connectionString": {
 						"value": "[parameters('ls_azuresql_connectionString')]"
 					},
@@ -127,11 +203,44 @@
 					"AzureDataLakeStorage1_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
 					},
+					"AzureDataLakeStorage2_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage2_properties_typeProperties_url')]"
+					},
+					"AzureDataLakeStorage2_properties_typeProperties_tenant": {
+						"value": "[parameters('AzureDataLakeStorage2_properties_typeProperties_tenant')]"
+					},
+					"AzureDataLakeStorage2_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('AzureDataLakeStorage2_properties_typeProperties_servicePrincipalId')]"
+					},
+					"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('AzureDatabricks1_properties_typeProperties_existingClusterId')]"
+					},
 					"AzureKeyVault_properties_typeProperties_baseUrl": {
 						"value": "[parameters('AzureKeyVault_properties_typeProperties_baseUrl')]"
 					},
+					"LS_ADBManagedIdentity_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('LS_ADBManagedIdentity_properties_typeProperties_existingClusterId')]"
+					},
+					"LS_AccessToken_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('LS_AccessToken_properties_typeProperties_existingClusterId')]"
+					},
+					"ls_adlsServicePrincipal_properties_typeProperties_url": {
+						"value": "[parameters('ls_adlsServicePrincipal_properties_typeProperties_url')]"
+					},
+					"ls_adlsServicePrincipal_properties_typeProperties_tenant": {
+						"value": "[parameters('ls_adlsServicePrincipal_properties_typeProperties_tenant')]"
+					},
+					"ls_adlsServicePrincipal_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('ls_adlsServicePrincipal_properties_typeProperties_servicePrincipalId')]"
+					},
+					"ls_copy_csv_file_properties_typeProperties_url": {
+						"value": "[parameters('ls_copy_csv_file_properties_typeProperties_url')]"
+					},
 					"ls_sourceadls_properties_typeProperties_url": {
 						"value": "[parameters('ls_sourceadls_properties_typeProperties_url')]"
+					},
+					"ls_target_copy_csv_properties_typeProperties_url": {
+						"value": "[parameters('ls_target_copy_csv_properties_typeProperties_url')]"
 					}
 				}
 			},
@@ -171,8 +280,8 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"ls_sourcesqlUsingAKV_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('ls_sourcesqlUsingAKV_properties_typeProperties_connectionString_secretName')]"
+					"AzureDatabricks2Keyvault_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('AzureDatabricks2Keyvault_properties_typeProperties_existingClusterId')]"
 					}
 				}
 			},
@@ -188,6 +297,29 @@
 				"mode": "incremental",
 				"templateLink": {
 					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"ls_sourcesqlUsingAKV_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('ls_sourcesqlUsingAKV_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'sura-adf-b3-dev_ArmTemplate_2')]"
+			]
+		},
+		{
+			"name": "sura-adf-b3-dev_ArmTemplate_4",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_4.json', parameters('containerSasToken'))]",
 					"contentVersion": "1.0.0.0"
 				},
 				"parameters": {
@@ -218,7 +350,7 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'sura-adf-b3-dev_ArmTemplate_2')]"
+				"[resourceId('Microsoft.Resources/deployments', 'sura-adf-b3-dev_ArmTemplate_3')]"
 			]
 		}
 	]

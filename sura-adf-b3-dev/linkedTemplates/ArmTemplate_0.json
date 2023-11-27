@@ -11,6 +11,22 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
 		},
+		"AzureDataLakeStorage2_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'AzureDataLakeStorage2'"
+		},
+		"AzureDatabricks1_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'AzureDatabricks1'"
+		},
+		"LS_AccessToken_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'LS_AccessToken'"
+		},
+		"ls_adlsServicePrincipal_servicePrincipalCredential": {
+			"type": "secureString",
+			"metadata": "Secure string for 'servicePrincipalCredential' of 'ls_adlsServicePrincipal'"
+		},
 		"ls_azuresql_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_azuresql'"
@@ -31,11 +47,55 @@
 			"type": "string",
 			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
 		},
+		"AzureDataLakeStorage2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage2_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "100a7e00-c249-4c60-b1c3-70200fb7e3dc"
+		},
+		"AzureDataLakeStorage2_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "77652f11-89cc-40c8-a73a-07a2f1dcb9c2"
+		},
+		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1030-160509-3hk1jbj6"
+		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://surakeyvault.vault.azure.net/"
 		},
+		"LS_ADBManagedIdentity_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1030-160509-3hk1jbj6"
+		},
+		"LS_AccessToken_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "1030-160509-3hk1jbj6"
+		},
+		"ls_adlsServicePrincipal_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
+		},
+		"ls_adlsServicePrincipal_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "100a7e00-c249-4c60-b1c3-70200fb7e3dc"
+		},
+		"ls_adlsServicePrincipal_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "0d81d1b2-ad0d-49a2-94dd-249ab461c35e"
+		},
+		"ls_copy_csv_file_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
+		},
 		"ls_sourceadls_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
+		},
+		"ls_target_copy_csv_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://suraadlsdev.dfs.core.windows.net/"
 		}
@@ -77,8 +137,10 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Pipelines_bkp"
 				},
 				"annotations": []
 			},
@@ -117,8 +179,10 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Pipelines_bkp"
 				},
 				"annotations": []
 			},
@@ -155,8 +219,10 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Pipelines_bkp"
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-09-05T15:54:04Z"
@@ -181,6 +247,44 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage2_properties_typeProperties_url')]",
+					"tenant": "[parameters('AzureDataLakeStorage2_properties_typeProperties_tenant')]",
+					"servicePrincipalId": "[parameters('AzureDataLakeStorage2_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredentialType": "ServicePrincipalKey",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage2_servicePrincipalCredential')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDatabricks1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-3203931274762907.7.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDatabricks1_accessToken')]"
+					},
+					"existingClusterId": "[parameters('AzureDatabricks1_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureKeyVault')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -194,6 +298,60 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/LS_ADBManagedIdentity')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-3203931274762907.7.azuredatabricks.net",
+					"authentication": "MSI",
+					"workspaceResourceId": "/subscriptions/ccd0d4d6-cfeb-40ab-b9e4-b0a2b1c7b2d5/resourceGroups/sura-rg-pay/providers/Microsoft.Databricks/workspaces/sura-adbwks-dev",
+					"existingClusterId": "[parameters('LS_ADBManagedIdentity_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/LS_AccessToken')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureDatabricks",
+				"typeProperties": {
+					"domain": "https://adb-3203931274762907.7.azuredatabricks.net",
+					"accessToken": {
+						"type": "SecureString",
+						"value": "[parameters('LS_AccessToken_accessToken')]"
+					},
+					"existingClusterId": "[parameters('LS_AccessToken_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_adlsServicePrincipal')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_adlsServicePrincipal_properties_typeProperties_url')]",
+					"tenant": "[parameters('ls_adlsServicePrincipal_properties_typeProperties_tenant')]",
+					"servicePrincipalId": "[parameters('ls_adlsServicePrincipal_properties_typeProperties_servicePrincipalId')]",
+					"servicePrincipalCredentialType": "ServicePrincipalKey",
+					"servicePrincipalCredential": {
+						"type": "SecureString",
+						"value": "[parameters('ls_adlsServicePrincipal_servicePrincipalCredential')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ls_azuresql')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -202,6 +360,19 @@
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
 					"connectionString": "[parameters('ls_azuresql_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_copy_csv_file')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_copy_csv_file_properties_typeProperties_url')]"
 				}
 			},
 			"dependsOn": []
@@ -241,6 +412,19 @@
 				"type": "AzureBlobFS",
 				"typeProperties": {
 					"url": "[parameters('ls_sourceadls_properties_typeProperties_url')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_target_copy_csv')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_target_copy_csv_properties_typeProperties_url')]"
 				}
 			},
 			"dependsOn": []
@@ -324,8 +508,10 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "Pipelines_bkp"
 				},
 				"annotations": [],
 				"lastPublishTime": "2023-09-05T15:40:16Z"
@@ -431,8 +617,7 @@
 					}
 				],
 				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
+					"elapsedTimeMetric": {}
 				},
 				"variables": {
 					"adfname": {
@@ -445,6 +630,9 @@
 						"type": "String"
 					}
 				},
+				"folder": {
+					"name": "Pipelines_bkp"
+				},
 				"annotations": [],
 				"lastPublishTime": "2023-08-29T15:24:46Z"
 			},
@@ -453,63 +641,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Ds_TumblingWindowSource')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_azuresql",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "sales_tumbling"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azuresql')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_CustomLoadTargetSQL')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_incrementalTargetSQL",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"TableName": {
-						"type": "string"
-					},
-					"SchemaName": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": {
-						"value": "@dataset().SchemaName",
-						"type": "Expression"
-					},
-					"table": {
-						"value": "@dataset().TableName",
-						"type": "Expression"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_incrementalTargetSQL')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_Getmeta_for_Filter')]",
+			"name": "[concat(parameters('factoryName'), '/ADBCsv')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -517,153 +649,16 @@
 					"referenceName": "ls_sourceadls",
 					"type": "LinkedServiceReference"
 				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "source",
-						"fileSystem": "sourcecontainer"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": false,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_sourceadls')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_Newwatermark_lookup')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_azuresql",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azuresql')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_azuresql')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_azuresql",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "employee"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azuresql')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_copySourceForAppendVatiable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_sourceadls",
-					"type": "LinkedServiceReference"
+				"folder": {
+					"name": "Datasets_bkp"
 				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": "source",
-						"fileSystem": "sourcecontainer"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": false,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_sourceadls')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_copyTargetForAppendVariable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_sourceadls",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().filename",
-							"type": "Expression"
-						},
-						"folderPath": "appendvariableTarget",
-						"fileSystem": "sourcecontainer"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": false,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_sourceadls')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/ds_copy_for_filter')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_sourceadls",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"SourceFilename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileName": {
-							"value": "@dataset().SourceFilename",
-							"type": "Expression"
-						},
-						"folderPath": "source",
+						"fileName": "employees.csv",
+						"folderPath": "ListOfFiles",
 						"fileSystem": "sourcecontainer"
 					},
 					"columnDelimiter": ",",

@@ -8,6 +8,18 @@
 		"AzureDataLakeStorage1_accountKey": {
 			"value": ""
 		},
+		"AzureDataLakeStorage2_servicePrincipalCredential": {
+			"value": ""
+		},
+		"AzureDatabricks1_accessToken": {
+			"value": ""
+		},
+		"LS_AccessToken_accessToken": {
+			"value": ""
+		},
+		"ls_adlsServicePrincipal_servicePrincipalCredential": {
+			"value": ""
+		},
 		"ls_azuresql_connectionString": {
 			"value": ""
 		},
@@ -23,14 +35,50 @@
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://suraadlsdev.dfs.core.windows.net/"
 		},
+		"AzureDataLakeStorage2_properties_typeProperties_url": {
+			"value": "https://suraadlsdev.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage2_properties_typeProperties_tenant": {
+			"value": "100a7e00-c249-4c60-b1c3-70200fb7e3dc"
+		},
+		"AzureDataLakeStorage2_properties_typeProperties_servicePrincipalId": {
+			"value": "77652f11-89cc-40c8-a73a-07a2f1dcb9c2"
+		},
+		"AzureDatabricks1_properties_typeProperties_existingClusterId": {
+			"value": "1030-160509-3hk1jbj6"
+		},
+		"AzureDatabricks2Keyvault_properties_typeProperties_existingClusterId": {
+			"value": "1030-160509-3hk1jbj6"
+		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://surakeyvault.vault.azure.net/"
+		},
+		"LS_ADBManagedIdentity_properties_typeProperties_existingClusterId": {
+			"value": "1030-160509-3hk1jbj6"
+		},
+		"LS_AccessToken_properties_typeProperties_existingClusterId": {
+			"value": "1030-160509-3hk1jbj6"
+		},
+		"ls_adlsServicePrincipal_properties_typeProperties_url": {
+			"value": "https://suraadlsdev.dfs.core.windows.net/"
+		},
+		"ls_adlsServicePrincipal_properties_typeProperties_tenant": {
+			"value": "100a7e00-c249-4c60-b1c3-70200fb7e3dc"
+		},
+		"ls_adlsServicePrincipal_properties_typeProperties_servicePrincipalId": {
+			"value": "0d81d1b2-ad0d-49a2-94dd-249ab461c35e"
+		},
+		"ls_copy_csv_file_properties_typeProperties_url": {
+			"value": "https://suraadlsdev.dfs.core.windows.net/"
 		},
 		"ls_sourceadls_properties_typeProperties_url": {
 			"value": "https://suraadlsdev.dfs.core.windows.net/"
 		},
 		"ls_sourcesqlUsingAKV_properties_typeProperties_connectionString_secretName": {
 			"value": "azuredevsql"
+		},
+		"ls_target_copy_csv_properties_typeProperties_url": {
+			"value": "https://suraadlsdev.dfs.core.windows.net/"
 		},
 		"TumblingWindowTrigger_24hrs_properties_pipeline_parameters_startdate": {
 			"value": "@trigger().outputs.windowStartTime"

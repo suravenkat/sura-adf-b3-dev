@@ -1,1 +1,6 @@
-{}
+{
+	"ADLS_Path_Prefix": {
+		"type": "string",
+		"value": "abfss://sourcecontainer@suraadlsdev.dfs.core.windows.net"
+	}
+}
