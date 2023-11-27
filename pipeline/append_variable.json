@@ -172,6 +172,9 @@
 				"type": "Array"
 			}
 		},
+		"folder": {
+			"name": "Pipelines_bkp"
+		},
 		"annotations": [],
 		"lastPublishTime": "2023-08-29T15:56:50Z"
 	},

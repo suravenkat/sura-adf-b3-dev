@@ -1,0 +1,375 @@
+{
+	"name": "Incremental_ADF_ADB",
+	"properties": {
+		"activities": [
+			{
+				"name": "AccessTokenNotebook",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": {
+						"value": "@pipeline().parameters.ADB_Notebook_Path",
+						"type": "Expression"
+					},
+					"baseParameters": {
+						"ingestionTables": {
+							"value": "@string(pipeline().parameters.ingestionTables)",
+							"type": "Expression"
+						},
+						"ADLS_Path_Prefix": {
+							"value": "@pipeline().globalParameters.ADLS_Path_Prefix",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_AccessToken",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.tablelist",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Oldwatermark",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "select WatermarkValue from watermarktable where TableName='@{item().tableName}'",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "ds_oldwatermark_lookup",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Newwatermark",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "select max(last_updated) as NewWatermarkvalue from @{item().tableName}",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "ds_Newwatermark_lookup",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Oldwatermark",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "Newwatermark",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "select * from @{item().tableName} where @{item().WaterMark_Column} >'@{formatDateTime(activity('Oldwatermark').output.firstRow.WatermarkValue, 'yyyy-MM-ddTHH:mm:ss')}' AND @{item().WaterMark_Column} <= '@{formatDateTime(activity('Newwatermark').output.firstRow.NewWatermarkvalue, 'yyyy-MM-ddTHH:mm:ss')}'",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "ds_incrementalCopySource",
+									"type": "DatasetReference",
+									"parameters": {
+										"TableSchema": {
+											"value": "@item().tableSchemaName",
+											"type": "Expression"
+										},
+										"TableName": {
+											"value": "@item().tableName",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ds_incremental_adb",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "Stored procedure1",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[usp_write_watermark]",
+								"storedProcedureParameters": {
+									"last_updated": {
+										"value": {
+											"value": "@activity('Newwatermark').output.firstRow.Newwatermarkvalue",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"tableName": {
+										"value": {
+											"value": "@item().tableName",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_azuresql",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"ingestionTables": {
+				"type": "object",
+				"defaultValue": {
+					"ingestionTables": [
+						{
+							"sourceTableName": "salesitems_increm",
+							"targetTableName": "hz_salesitems_increm",
+							"Source_File_Name": "lz_salesitems_increm",
+							"Source_File_Location": "/adb/lz_data/src_sys/asia/sales/",
+							"Target_File_Location": "/adb/hz_data/src_sys/asia/sales/hz_salesitems_increm/",
+							"Delete_File_Location": "/adb/hz_data/src_sys/asia/sales/hz_salesitems_increm/",
+							"Source_File_Delimiter": "parquet",
+							"Rejected_Record_Location": "/adb/working/sales/err/asia/err_salesitems_increm/",
+							"Rejected_File_Location": "/adb/lz_data/src_sys/asia/sales/reject/hz_salesitems_increm/",
+							"Encoding": "UTF-8",
+							"Archive_File": "yes",
+							"Source_File_Archive_Location": "/adb/lz_data/src_sys/asia/sales/archive/hz_salesitems_increm",
+							"Load_Type_Code": "incremental",
+							"zone": "asia",
+							"country": "india",
+							"businessDomain": "sales",
+							"businessSubDomain": "sales_electronics_domain",
+							"sourceSystemId": "2023",
+							"sourceSystemName": "sales",
+							"Job_Run_ID": "20231113121245641",
+							"HZ_DB_Name": "dev_db",
+							"watermark_column": "last_updated",
+							"Error_DB_Name": "dev_db",
+							"Error_Data_Lake_object": "err_salesitems_increm",
+							"tableColumns": [
+								{
+									"sourceColumnName": "id",
+									"sourceDataType": "int",
+									"targetColumnName": "id",
+									"targetDataType": "int",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "item",
+									"sourceDataType": "nvarchar",
+									"targetColumnName": "item",
+									"targetDataType": "string",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "salesman",
+									"sourceDataType": "nvarchar",
+									"targetColumnName": "salesman",
+									"targetDataType": "string",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "location",
+									"sourceDataType": "nvarchar",
+									"targetColumnName": "location",
+									"targetDataType": "string",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "solditems",
+									"sourceDataType": "int",
+									"targetColumnName": "solditems",
+									"targetDataType": "int",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "last_updated",
+									"sourceDataType": "datetime",
+									"targetColumnName": "last_updated",
+									"targetDataType": "timestamp",
+									"isKey": false
+								}
+							],
+							"targetTablePartition": []
+						}
+					]
+				}
+			},
+			"ADB_Notebook_Path": {
+				"type": "string",
+				"defaultValue": "/Users/suravenkatb324@gmail.com/ADB_Ingestion_Data/adb_master_code_adb"
+			},
+			"Batch_Run_ID": {
+				"type": "string",
+				"defaultValue": "20231113121245641"
+			},
+			"Batch_Name": {
+				"type": "string",
+				"defaultValue": "employee"
+			},
+			"CURRENT_USER": {
+				"type": "string",
+				"defaultValue": "suravenkatb324@gmail.com"
+			},
+			"businessArea": {
+				"type": "string",
+				"defaultValue": "sales"
+			},
+			"Business_Sub_Domain": {
+				"type": "string",
+				"defaultValue": "sales_electronics_domain"
+			},
+			"projectName": {
+				"type": "string",
+				"defaultValue": "sales"
+			},
+			"country": {
+				"type": "string",
+				"defaultValue": "india"
+			},
+			"src_sys_name": {
+				"type": "string",
+				"defaultValue": "salesDatabase"
+			},
+			"src_sys_id": {
+				"type": "string",
+				"defaultValue": "2023"
+			},
+			"lz_root_path": {
+				"type": "string",
+				"defaultValue": "/adb/lz_data/src_sys/asia/sales/"
+			},
+			"tablelist": {
+				"type": "array",
+				"defaultValue": [
+					{
+						"tableName": "salesitems_increm",
+						"tableSchemaName": "dbo",
+						"WaterMark_Column": "last_updated"
+					}
+				]
+			}
+		},
+		"folder": {
+			"name": "ADB-Pipelines"
+		},
+		"annotations": []
+	}
+}

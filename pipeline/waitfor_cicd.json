@@ -28,6 +28,9 @@
 				}
 			}
 		],
+		"folder": {
+			"name": "Pipelines_bkp"
+		},
 		"annotations": []
 	}
 }

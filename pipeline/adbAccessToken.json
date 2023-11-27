@@ -1,0 +1,224 @@
+{
+	"name": "adbAccessToken",
+	"properties": {
+		"activities": [
+			{
+				"name": "AccessTokenNotebook",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": {
+						"value": "@pipeline().parameters.ADB_Notebook_Path",
+						"type": "Expression"
+					},
+					"baseParameters": {
+						"ingestionTables": {
+							"value": "@string(pipeline().parameters.ingestionTables)",
+							"type": "Expression"
+						},
+						"ADLS_Path_Prefix": {
+							"value": "@pipeline().globalParameters.ADLS_Path_Prefix",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_AccessToken",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ADBCsv",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Parquet1ADB",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"ingestionTables": {
+				"type": "object",
+				"defaultValue": {
+					"ingestionTables": [
+						{
+							"sourceTableName": "salesemployee",
+							"targetTableName": "hz_salesemployee",
+							"Source_File_Name": "lz_salesemployee",
+							"Source_File_Location": "/adb/lz_data/src_sys/asia/sales/",
+							"Target_File_Location": "/adb/hz_data/src_sys/asia/sales/hz_salesemployee/",
+							"Delete_File_Location": "/adb/hz_data/src_sys/asia/sales/hz_salesemployee/",
+							"Source_File_Delimiter": "parquet",
+							"Rejected_Record_Location": "/adb/working/sales/err/asia/err_salesemployee/",
+							"Rejected_File_Location": "/adb/lz_data/src_sys/asia/sales/reject/hz_salesemployee/",
+							"Encoding": "UTF-8",
+							"Archive_File": "yes",
+							"Source_File_Archive_Location": "/adb/lz_data/src_sys/asia/sales/archive/hz_salesemployee",
+							"Load_Type_Code": "flush_n_fill",
+							"zone": "asia",
+							"country": "asia",
+							"businessDomain": "sales",
+							"businessSubDomain": "sales_electronics_domain",
+							"sourceSystemId": "",
+							"sourceSystemName": "sales",
+							"Job_Run_ID": "20231113121245641",
+							"HZ_DB_Name": "dev_db",
+							"watermark_column": "id",
+							"Error_DB_Name": "dev_db",
+							"Error_Data_Lake_object": "err_salesemployee",
+							"tableColumns": [
+								{
+									"sourceColumnName": "id",
+									"sourceDataType": "string",
+									"targetColumnName": "id",
+									"targetDataType": "int",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "name",
+									"sourceDataType": "string",
+									"targetColumnName": "name",
+									"targetDataType": "string",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "salary",
+									"sourceDataType": "string",
+									"targetColumnName": "salary",
+									"targetDataType": "double",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "age",
+									"sourceDataType": "string",
+									"targetColumnName": "age",
+									"targetDataType": "int",
+									"isKey": false
+								},
+								{
+									"sourceColumnName": "company",
+									"sourceDataType": "string",
+									"targetColumnName": "company",
+									"targetDataType": "string",
+									"isKey": false
+								}
+							],
+							"targetTablePartition": []
+						}
+					]
+				}
+			},
+			"ADB_Notebook_Path": {
+				"type": "string",
+				"defaultValue": "/Users/suravenkatb324@gmail.com/ADB_Ingestion_Data/adb_master_code_adb"
+			},
+			"Batch_Run_ID": {
+				"type": "string",
+				"defaultValue": "20231113121245641"
+			},
+			"Batch_Name": {
+				"type": "string",
+				"defaultValue": "employee"
+			},
+			"CURRENT_USER": {
+				"type": "string",
+				"defaultValue": "suravenkatb324@gmail.com"
+			},
+			"businessArea": {
+				"type": "string",
+				"defaultValue": "sales"
+			},
+			"Business_Sub_Domain": {
+				"type": "string",
+				"defaultValue": "sales_electronics_domain"
+			},
+			"projectName": {
+				"type": "string",
+				"defaultValue": "sales"
+			},
+			"country": {
+				"type": "string",
+				"defaultValue": "india"
+			},
+			"src_sys_name": {
+				"type": "string",
+				"defaultValue": "salesDatabase"
+			},
+			"src_sys_id": {
+				"type": "string",
+				"defaultValue": "2023"
+			},
+			"lz_root_path": {
+				"type": "string",
+				"defaultValue": "/adb/lz_data/src_sys/asia/sales/"
+			}
+		},
+		"folder": {
+			"name": "ADB-Pipelines"
+		},
+		"annotations": []
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"name": "GlobalManagedIdentity",
+	"properties": {
+		"folder": {
+			"name": "ADB-Pipelines"
+		},
+		"annotations": []
+	}
+}

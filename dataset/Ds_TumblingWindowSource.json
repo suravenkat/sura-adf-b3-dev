@@ -5,6 +5,9 @@
 			"referenceName": "ls_azuresql",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "Datasets_bkp"
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],

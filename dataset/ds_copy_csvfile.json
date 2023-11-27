@@ -1,0 +1,24 @@
+{
+	"name": "ds_copy_csvfile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_copy_csv_file",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "employees.csv",
+				"folderPath": "ListOfFiles",
+				"fileSystem": "sourcecontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

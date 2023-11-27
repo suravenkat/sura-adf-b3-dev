@@ -1,0 +1,24 @@
+{
+	"name": "ds_incremental_adb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sourceadls",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Datasets_bkp"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "lz_salesitems_increm",
+				"folderPath": "adb/lz_data/src_sys/asia/sales",
+				"fileSystem": "sourcecontainer"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
